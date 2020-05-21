@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+         <meta name="description" content="CSS3 Animation HTML & CSS" />
+         <meta name="keywords" content="HTML & CSS3" />
+         <meta name="author" content="Jelson J" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Comment App</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+            integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    </head>
+
+    <body>
+        <div id="app"></div>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script>
+            new Vue({
+                el: '#app',
+
+                template: ` 
+
+<div class="container">
+    <h1 class="text-center">Comments App</h1>
+    <hr>
+    <div class="form-todo form-group">
+        <p>
+        <input v-model="name" type="text" placeholder="Type your name" name="user" class="form-control">
+        </p>
+        <p>
+        <textarea v-model="message"  name="message" placeholder="Add a comment" class="form-control"></textarea>
+        </p>
+        <button v-on:click.prevent="addBtn" type="submit" class="btn btn-success">Comment</button>
+    </div>
+    <div class="list-group">
+        <div class="list-group-item" v-for="(comment, index) in myComments">
+        <p class="comment">User: <strong>{{comment.name}}</strong> </p>
+        <p>{{comment.message}}</p>
+        <div> 
+        <a href="#" title="Remove" v-on:click="deleteCom(index)">Remove comemnt</a>
+        </div>
+
+    </div>
+</div>
+
+</div>
+
+`,
+                data() {
+                    return {
+                        comments: [],
+                        name: '',
+                        message: ''
+                    }
+
+                },
+                methods: {
+                    addBtn() {
+                        if (this.message.trim() === '') {
+                            return;
+                        }
+                        console.log('cheking')
+                        this.comments.push({
+                            name: this.name,
+                            message: this.message
+                        })
+                        this.message = '';
+                        this.name = '';
+                    },
+
+                    deleteCom(index) {
+                        this.comments.splice(index, 1)
+                        console.log('testing')
+                    }
+                },
+                computed: {
+                    myComments() {
+                        return this.comments.map(comment => ({
+                            ...comment,
+                            name: comment.name.trim() === '' ? 'Not User Name' : comment.name
+                        }))
+                    }
+                }
+
+            })
+        </script>
+    </body>
+
+</html>
